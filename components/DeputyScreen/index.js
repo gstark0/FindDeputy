@@ -5,19 +5,24 @@ import { NavigationActions } from 'react-navigation';
 class DeputyScreen extends React.Component {
 
 	static navigationOptions = {
-		title: 'ZnajdźPosła'
+		title: 'ZnajdźPosła',
+		headerTitleStyle: {
+			fontWeight: 'normal'
+		},
+		headerStyle: {
+			backgroundColor: '#29b6f6'
+		}
 	}
 
 	constructor(props) {
 		super(props);
-		this.load = this.load.bind(this);
 		this.state = {
 			deputiesRendered: null
 		};
 	}
 
-	load(navigate) {
-
+	componentWillMount() {
+		const { navigate } = this.props.navigation;
 		fetch('https://api-v3.mojepanstwo.pl/dane/poslowie.json?conditions[poslowie.kadencja]=8&limit=460')
 		.then(resp => resp.json())
 		.then(resp => {
@@ -40,8 +45,6 @@ class DeputyScreen extends React.Component {
 	}
 
 	render() {
-		const { navigate } = this.props.navigation;
-		this.load(navigate);
 		return(
 			<ScrollView>{this.state.deputiesRendered}</ScrollView>
 		);
@@ -50,8 +53,11 @@ class DeputyScreen extends React.Component {
 
 const styles = StyleSheet.create({
 	deputyData: {
-		padding: 10,
-		borderBottomWidth: 2,
+		paddingTop: 10,
+		paddingBottom: 10,
+		paddingLeft: 20,
+		paddingRight: 20,
+		borderBottomWidth: 1,
 		borderBottomColor: '#e2e2e2',
 		flexDirection: 'row'
 	},
