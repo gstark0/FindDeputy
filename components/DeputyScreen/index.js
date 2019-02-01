@@ -69,7 +69,8 @@ const styles = StyleSheet.create({
 	},
 
 	deputyInfo: {
-		marginLeft: 10
+		marginLeft: 10,
+		justifyContent: 'center'
 	},
 
 	deputyName: {
