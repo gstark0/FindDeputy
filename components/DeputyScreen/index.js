@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { Searchbar } from 'react-native-paper';
 
 class DeputyScreen extends React.Component {
 
@@ -41,12 +42,26 @@ class DeputyScreen extends React.Component {
 			})
 
 			this.setState({deputiesRendered: deputiesRendered});
+			this.setState({allDeputies: deputiesRendered});
 		});
 	}
 
 	render() {
 		return(
-			<ScrollView>{this.state.deputiesRendered}</ScrollView>
+			<View>
+				<Searchbar placeholder="Szukaj posła..." onChangeText={query => {
+					let allDeputies = this.state.allDeputies;
+					let foundDeputies = [];
+					allDeputies.forEach(function(deputy) {
+						if(deputy['props']['children'][1]['props']['children'][0]['props']['children'].includes(query)) {
+							foundDeputies.push(deputy);
+						}
+					});
+					console.log(foundDeputies.length);
+					this.setState({deputiesRendered: foundDeputies});
+				}}/>
+				<ScrollView>{this.state.deputiesRendered}</ScrollView>
+			</View>
 		);
 	}
 }
