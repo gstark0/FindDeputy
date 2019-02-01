@@ -6,10 +6,11 @@ class DeputyInfo extends React.Component {
 	static navigationOptions = {
 		title: 'Poseł',
 		headerTitleStyle: {
-			fontWeight: 'normal'
+			fontWeight: 'normal',
+			color: '#fff'
 		},
 		headerStyle: {
-			backgroundColor: '#29b6f6'
+			backgroundColor: '#1976d2'
 		}
 	}
 

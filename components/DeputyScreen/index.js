@@ -8,10 +8,11 @@ class DeputyScreen extends React.Component {
 	static navigationOptions = {
 		title: 'ZnajdźPosła',
 		headerTitleStyle: {
-			fontWeight: 'normal'
+			fontWeight: 'normal',
+			color: '#fff'
 		},
 		headerStyle: {
-			backgroundColor: '#29b6f6'
+			backgroundColor: '#1976d2',
 		}
 	}
 
@@ -53,11 +54,10 @@ class DeputyScreen extends React.Component {
 					let allDeputies = this.state.allDeputies;
 					let foundDeputies = [];
 					allDeputies.forEach(function(deputy) {
-						if(deputy['props']['children'][1]['props']['children'][0]['props']['children'].includes(query)) {
+						if(deputy['props']['children'][1]['props']['children'][0]['props']['children'].toLowerCase().includes(query.toLowerCase())) {
 							foundDeputies.push(deputy);
 						}
 					});
-					console.log(foundDeputies.length);
 					this.setState({deputiesRendered: foundDeputies});
 				}}/>
 				<ScrollView>{this.state.deputiesRendered}</ScrollView>
