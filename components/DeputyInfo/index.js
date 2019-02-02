@@ -74,7 +74,7 @@ class DeputyInfo extends React.Component {
 			//<Text>{this.state.data}</Text>
 			<View style={styles.container}>
 				<View style={styles.profileContainer}>
-					<Image style={styles.profilePic} source={{uri: 'https://s3.eu-central-1.amazonaws.com/sejmometr/speakers/' + this.state.numer_legitymacji + '-0.jpg'}}/>
+					<Image style={styles.profilePic} source={{uri: 'http://poslowie.ct8.pl/poslowie/' + this.state.imie + '/pic.jpg'}}/>
 				</View>
 
 				<View style={styles.basicInfo}>

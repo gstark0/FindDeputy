@@ -33,7 +33,7 @@ class DeputyScreen extends React.Component {
 			deputies.forEach(function(deputy) {
 				deputiesRendered.push(
 					<TouchableOpacity style={styles.deputyData} onPress={() => navigate('DeputyInfo', {id: deputy['data']['poslowie.id']})}>
-						<Image style={styles.profilePic} source={{uri: 'https://s3.eu-central-1.amazonaws.com/sejmometr/speakers/'+ deputy['data']['poslowie.numer_legitymacji'] + '-0.jpg'}}/>
+						<Image style={styles.profilePic} source={{uri: 'http://poslowie.ct8.pl/poslowie/'+ deputy['data']['ludzie.nazwa'] + '/pic.jpg'}} />
 						<View style={styles.deputyInfo}>
 							<Text style={styles.deputyName}>{deputy['data']['ludzie.nazwa']}</Text>
 							<Text style={styles.deputyClub}>{deputy['data']['sejm_kluby.skrot']}</Text>
@@ -42,8 +42,10 @@ class DeputyScreen extends React.Component {
 				);
 			})
 
-			this.setState({deputiesRendered: deputiesRendered});
-			this.setState({allDeputies: deputiesRendered});
+			this.setState({
+				deputiesRendered: deputiesRendered,
+				allDeputies: deputiesRendered
+			});
 		});
 	}
 
