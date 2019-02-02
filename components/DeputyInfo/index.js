@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, Image } from 'react-native';
+import { StyleSheet, View, Text, Button, Image, Linking } from 'react-native';
 
 class DeputyInfo extends React.Component {
 	
@@ -26,14 +26,15 @@ class DeputyInfo extends React.Component {
 			okreg_wyborczy: null,
 			numer_legitymacji: null,
 			zawod: null,
+
+			procent_glosow: null,
 			liczba_projektow_ustaw: null,
 			liczba_wypowiedzi: null,
 			liczba_glosowan: null,
 			liczba_glosowan_opuszczonych: null,
-			liczba_wyjazdow: null,
-			liczba_przelotow: null,
-			wartosc_uposazenia: null,
-			wartosc_wyjazdow: null
+			liczba_glosowan_zbuntowanych: null,
+
+			osw: null
 		};
 	}
 	
@@ -45,27 +46,33 @@ class DeputyInfo extends React.Component {
 		.then(resp => resp.json())
 		.then(resp => {
 			resp = resp['data'];
-			this.setState({
-				imie: resp['ludzie.nazwa'],
-				klub: resp['sejm_kluby.nazwa'],
 
-				data_urodzenia: resp['poslowie.data_urodzenia'],
-				miesjce_urodzenia: resp['poslowie.miejsce_urodzenia'],
-				okreg_wyborczy: resp['poslowie.sejm_okreg_id'],
-				numer_legitymacji: resp['poslowie.numer_legitymacji'],
-				zawod: resp['poslowie.zawod'],
+			let imie = resp['ludzie.nazwa'];
 
-				frekwencja: resp['poslowie.frekwencja'],
-				liczba_projektow_ustaw: resp['poslowie.liczba_projektow_ustaw'],
-				liczba_wypowiedzi: resp['poslowie.liczba_wypowiedzi'],
-				liczba_glosowan_opuszczonych: resp['poslowie.liczba_glosowan_opuszczonych'],
-				liczba_glosowan: resp['poslowie.liczba_glosowan'],
-				liczba_wyjazdow: resp['poslowie.liczba_wyjazdow'],
-				liczba_przelotow: resp['poslowie.liczba_przelotow'],
+			fetch('http://poslowie.ct8.pl/poslowie/' + imie.replace(' ', '%20') + '/osw.txt')
+			.then(resp2 => {
+				this.setState({
+					imie: imie,
+					klub: resp['sejm_kluby.nazwa'],
 
-				wartosc_uposazenia: resp['poslowie.wartosc_uposazenia_pln'],
-				wartosc_wyjazdow: resp['poslowie.wartosc_wyjazdow']
+					data_urodzenia: resp['poslowie.data_urodzenia'],
+					miesjce_urodzenia: resp['poslowie.miejsce_urodzenia'],
+					okreg_wyborczy: resp['poslowie.sejm_okreg_id'],
+					numer_legitymacji: resp['poslowie.numer_legitymacji'],
+					zawod: resp['poslowie.zawod'],
+
+					procent_glosow: resp['poslowie.procent_glosow'],
+					frekwencja: resp['poslowie.frekwencja'],
+					liczba_projektow_ustaw: resp['poslowie.liczba_projektow_ustaw'],
+					liczba_wypowiedzi: resp['poslowie.liczba_wypowiedzi'],
+					liczba_glosowan_opuszczonych: resp['poslowie.liczba_glosowan_opuszczonych'],
+					liczba_glosowan_zbuntowanych: resp['poslowie.liczba_glosowan_zbuntowanych'],
+					liczba_glosowan: resp['poslowie.liczba_glosowan'],
+
+					osw: resp2['_bodyText']
+				});
 			});
+
 		})
 	}
 
@@ -102,9 +109,18 @@ class DeputyInfo extends React.Component {
 						<Text style={styles.fieldName}>Zawód: </Text>
 						<Text style={styles.fieldContent}>{this.state.zawod}</Text>
 					</View>
+
+					<View style={styles.field}>
+						<Text style={styles.fieldName}>Numer legitymacji: </Text>
+						<Text style={styles.fieldContent}>{this.state.numer_legitymacji}</Text>
+					</View>
 				</View>
 
 				<View style={styles.fieldsContainer}>
+					<View style={styles.field}>
+						<Text style={styles.fieldName}>Procent głosów:</Text>
+						<Text style={styles.fieldContent}>{this.state.procent_glosow}%</Text>
+					</View>
 					<View style={styles.field}>
 						<Text style={styles.fieldName}>Frekwencja:</Text>
 						<Text style={styles.fieldContent}>{this.state.frekwencja}%</Text>
@@ -122,29 +138,16 @@ class DeputyInfo extends React.Component {
 						<Text style={styles.fieldContent}>{this.state.liczba_glosowan}</Text>
 					</View>
 					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba opuszczonych głosowań: </Text>
+						<Text style={styles.fieldName}>Liczba głosowań opuszconych: </Text>
 						<Text style={styles.fieldContent}>{this.state.liczba_glosowan_opuszczonych}</Text>
 					</View>
 					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba wyjazdów: </Text>
-						<Text style={styles.fieldContent}>{this.state.liczba_wyjazdow}</Text>
-					</View>
-					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba przelotów: </Text>
-						<Text style={styles.fieldContent}>{this.state.liczba_przelotow}</Text>
+						<Text style={styles.fieldName}>Liczba głosowań zbuntowanych: </Text>
+						<Text style={styles.fieldContent}>{this.state.liczba_glosowan_zbuntowanych}</Text>
 					</View>
 				</View>
 
-				<View style={styles.fieldsContainer}>
-					<View style={styles.field}>
-						<Text style={styles.fieldName}>Wartość uposażenia: </Text>
-						<Text style={styles.fieldContent}>{this.state.wartosc_uposazenia} zł</Text>
-					</View>
-					<View style={styles.field}>
-						<Text style={styles.fieldName}>Wartość wyjazdów: </Text>
-						<Text style={styles.fieldContent}>{this.state.wartosc_wyjazdow} zł</Text>
-					</View>
-				</View>
+				<Button title='Zobacz oświadczenie majątkowe' onPress={ ()=>{ Linking.openURL( this.state.osw )}}></Button>
 			</View>
 		)
 	}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Searchbar } from 'react-native-paper';
 
@@ -19,7 +19,8 @@ class DeputyScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			deputiesRendered: null
+			deputiesRendered: null,
+			loaderDisplay: true
 		};
 	}
 
@@ -44,7 +45,8 @@ class DeputyScreen extends React.Component {
 
 			this.setState({
 				deputiesRendered: deputiesRendered,
-				allDeputies: deputiesRendered
+				allDeputies: deputiesRendered,
+				loaderDisplay: false
 			});
 		});
 	}
@@ -62,6 +64,7 @@ class DeputyScreen extends React.Component {
 					});
 					this.setState({deputiesRendered: foundDeputies});
 				}}/>
+				<ActivityIndicator size="large" color="#1976d2" style={this.state.loaderDisplay ? null : { display: "none" }}/>
 				<ScrollView>{this.state.deputiesRendered}</ScrollView>
 			</View>
 		);
