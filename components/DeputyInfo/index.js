@@ -22,17 +22,15 @@ class DeputyInfo extends React.Component {
 			klub: null,
 
 			data_urodzenia: null,
-			miesjce_urodzenia: null,
+			miejsce_urodzenia: null,
 			okreg_wyborczy: null,
-			numer_legitymacji: null,
+			wyksztalcenie: null,
 			zawod: null,
+			email: null,
 
-			procent_glosow: null,
-			liczba_projektow_ustaw: null,
-			liczba_wypowiedzi: null,
-			liczba_glosowan: null,
-			liczba_glosowan_opuszczonych: null,
-			liczba_glosowan_zbuntowanych: null,
+			liczba_glosow: null,
+			frekwencja: null,
+			wystapienia: null,
 
 			osw: null
 		};
@@ -40,43 +38,31 @@ class DeputyInfo extends React.Component {
 	
 	componentWillMount() {
 		const {state} = this.props.navigation;
-		let id = state.params.id;
+		let data = state.params.data;
 
-		fetch('https://api-v3.mojepanstwo.pl/dane/poslowie/' + id)
-		.then(resp => resp.json())
-		.then(resp => {
-			resp = resp['data'];
+		this.setState({
+			imie: data['imie'],
+			klub: data['lista'],
 
-			let imie = resp['ludzie.nazwa'];
+			data_urodzenia: data['data_urodzenia'],
+			miejsce_urodzenia: data['miejsce_urodzenia'],
+			okreg_wyborczy: data['okreg_wyborczy'],
+			wyksztalcenie: data['wyksztalcenie'],
+			zawod: data['zawod'],
+			email: data['email'],
 
-			fetch('http://poslowie.ct8.pl/poslowie/' + imie.replace(' ', '%20') + '/osw.txt')
-			.then(resp2 => {
-				this.setState({
-					imie: imie,
-					klub: resp['sejm_kluby.nazwa'],
+			liczba_glosow: data['liczba_glosow'],
+			frekwencja: data['glosowania'],
+			wystapienia: data['wystapienia'],
 
-					data_urodzenia: resp['poslowie.data_urodzenia'],
-					miesjce_urodzenia: resp['poslowie.miejsce_urodzenia'],
-					okreg_wyborczy: resp['poslowie.sejm_okreg_id'],
-					numer_legitymacji: resp['poslowie.numer_legitymacji'],
-					zawod: resp['poslowie.zawod'],
+			osw: data['osw']
+		});
 
-					procent_glosow: resp['poslowie.procent_glosow'],
-					frekwencja: resp['poslowie.frekwencja'],
-					liczba_projektow_ustaw: resp['poslowie.liczba_projektow_ustaw'],
-					liczba_wypowiedzi: resp['poslowie.liczba_wypowiedzi'],
-					liczba_glosowan_opuszczonych: resp['poslowie.liczba_glosowan_opuszczonych'],
-					liczba_glosowan_zbuntowanych: resp['poslowie.liczba_glosowan_zbuntowanych'],
-					liczba_glosowan: resp['poslowie.liczba_glosowan'],
-
-					osw: resp2['_bodyText']
-				});
-			});
-
-		})
 	}
 
 	render() {
+		const {state} = this.props.navigation;
+		let nazwa = state.params.nazwa;
 		return(
 			//<Text>{this.state.data}</Text>
 			<View style={styles.container}>
@@ -85,7 +71,7 @@ class DeputyInfo extends React.Component {
 				</View>
 
 				<View style={styles.basicInfo}>
-					<Text style={styles.name}>{this.state.imie}</Text>
+					<Text style={styles.name}>{nazwa}</Text>
 					<Text style={styles.club}>{this.state.klub}</Text>
 				</View>
 
@@ -97,7 +83,7 @@ class DeputyInfo extends React.Component {
 
 					<View style={styles.field}>
 						<Text style={styles.fieldName}>Miejsce urodzenia: </Text>
-						<Text style={styles.fieldContent}>{this.state.miesjce_urodzenia}</Text>
+						<Text style={styles.fieldContent}>{this.state.miejsce_urodzenia}</Text>
 					</View>
 
 					<View style={styles.field}>
@@ -106,44 +92,33 @@ class DeputyInfo extends React.Component {
 					</View>
 
 					<View style={styles.field}>
+						<Text style={styles.fieldName}>Wykształcenie: </Text>
+						<Text style={styles.fieldContent}>{this.state.wyksztalcenie}</Text>
+					</View>
+
+					<View style={styles.field}>
 						<Text style={styles.fieldName}>Zawód: </Text>
 						<Text style={styles.fieldContent}>{this.state.zawod}</Text>
 					</View>
 
 					<View style={styles.field}>
-						<Text style={styles.fieldName}>Numer legitymacji: </Text>
-						<Text style={styles.fieldContent}>{this.state.numer_legitymacji}</Text>
+						<Text style={styles.fieldName}>Email: </Text>
+						<Text style={styles.fieldContent}>{this.state.email}</Text>
 					</View>
 				</View>
 
 				<View style={styles.fieldsContainer}>
 					<View style={styles.field}>
-						<Text style={styles.fieldName}>Procent głosów:</Text>
-						<Text style={styles.fieldContent}>{this.state.procent_glosow}%</Text>
+						<Text style={styles.fieldName}>Liczba głosów:</Text>
+						<Text style={styles.fieldContent}>{this.state.liczba_glosow}</Text>
 					</View>
 					<View style={styles.field}>
 						<Text style={styles.fieldName}>Frekwencja:</Text>
-						<Text style={styles.fieldContent}>{this.state.frekwencja}%</Text>
+						<Text style={styles.fieldContent}>{this.state.frekwencja}</Text>
 					</View>
 					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba projektów ustaw: </Text>
-						<Text style={styles.fieldContent}>{this.state.liczba_projektow_ustaw}</Text>
-					</View>
-					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba wypowiedzi: </Text>
-						<Text style={styles.fieldContent}>{this.state.liczba_wypowiedzi}</Text>
-					</View>
-					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba głosowań: </Text>
-						<Text style={styles.fieldContent}>{this.state.liczba_glosowan}</Text>
-					</View>
-					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba głosowań opuszconych: </Text>
-						<Text style={styles.fieldContent}>{this.state.liczba_glosowan_opuszczonych}</Text>
-					</View>
-					<View style={styles.field}>
-						<Text style={styles.fieldName}>Liczba głosowań zbuntowanych: </Text>
-						<Text style={styles.fieldContent}>{this.state.liczba_glosowan_zbuntowanych}</Text>
+						<Text style={styles.fieldName}>Wystąpnienia: </Text>
+						<Text style={styles.fieldContent}>{this.state.wystapienia}</Text>
 					</View>
 				</View>
 

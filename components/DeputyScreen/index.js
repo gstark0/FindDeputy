@@ -26,18 +26,20 @@ class DeputyScreen extends React.Component {
 
 	componentWillMount() {
 		const { navigate } = this.props.navigation;
-		fetch('https://api-v3.mojepanstwo.pl/dane/poslowie.json?conditions[poslowie.kadencja]=8&limit=460')
+		fetch('http://sejm.opendata.website/poslowie')
 		.then(resp => resp.json())
 		.then(resp => {
-			let deputies = resp['Dataobject']
 			let deputiesRendered = [];
-			deputies.forEach(function(deputy) {
+			resp.forEach(function(deputy) {
+				let nazwa = deputy['imie'].split(' ');
+				nazwa = nazwa[1] + ' ' + nazwa[0];
+				console.log(nazwa);
 				deputiesRendered.push(
-					<TouchableOpacity style={styles.deputyData} onPress={() => navigate('DeputyInfo', {id: deputy['data']['poslowie.id']})}>
-						<Image style={styles.profilePic} source={{uri: 'http://poslowie.ct8.pl/poslowie/'+ deputy['data']['ludzie.nazwa'] + '/pic.jpg'}} />
+					<TouchableOpacity style={styles.deputyData} onPress={() => navigate('DeputyInfo', {data: deputy, nazwa: nazwa})}>
+						<Image style={styles.profilePic} source={{uri: 'http://poslowie.ct8.pl/poslowie/'+ deputy['imie'] + '/pic.jpg'}} />
 						<View style={styles.deputyInfo}>
-							<Text style={styles.deputyName}>{deputy['data']['ludzie.nazwa']}</Text>
-							<Text style={styles.deputyClub}>{deputy['data']['sejm_kluby.skrot']}</Text>
+							<Text style={styles.deputyName}>{nazwa}</Text>
+							<Text style={styles.deputyClub}>{deputy['klub']}</Text>
 						</View>
 					</TouchableOpacity>
 				);
