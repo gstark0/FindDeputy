@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./icons/web_hi_res_512.png",
     "updates": {
@@ -21,7 +21,8 @@
       "supportsTablet": true
     },
     "android": {
-    	"package": "com.gstark.znajdzposla"
+    	"package": "com.gstark.znajdzposla",
+    	"permissions": []
     }
   }
 }
