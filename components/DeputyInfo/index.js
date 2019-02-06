@@ -1,18 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, Image, Linking } from 'react-native';
+import { StyleSheet, View, Text, Button, Image, Linking, TouchableOpacity } from 'react-native';
 
 class DeputyInfo extends React.Component {
-	
-	static navigationOptions = {
-		title: 'Poseł',
-		headerTitleStyle: {
-			fontWeight: 'normal',
-			color: '#fff'
-		},
-		headerStyle: {
-			backgroundColor: '#1976d2'
-		}
-	}
 
 	constructor(props) {
 		super(props);
@@ -32,8 +21,28 @@ class DeputyInfo extends React.Component {
 			frekwencja: null,
 			wystapienia: null,
 
-			osw: null
+			osw: null,
+			link: null
 		};
+	}
+
+	static navigationOptions = ({ navigation }) => {
+		const {params = {}} = navigation.state;
+		return {
+			title: 'Poseł',
+			headerTitleStyle: {
+				fontWeight: 'normal',
+				color: '#fff'
+			},
+			headerStyle: {
+				backgroundColor: '#1976d2'
+			},
+			headerRight: (
+				<TouchableOpacity onPress={() => Linking.openURL( params.data.link )}>
+					<Text style={{color: '#fff', fontSize: 19, marginRight: 20}}>sejm.gov.pl</Text>
+				</TouchableOpacity>
+			)
+		}
 	}
 	
 	componentWillMount() {
@@ -55,7 +64,8 @@ class DeputyInfo extends React.Component {
 			frekwencja: data['glosowania'],
 			wystapienia: data['wystapienia'],
 
-			osw: data['osw']
+			osw: data['osw'],
+			link: data['link']
 		});
 
 	}
@@ -122,7 +132,7 @@ class DeputyInfo extends React.Component {
 					</View>
 				</View>
 
-				<Button title='Zobacz oświadczenie majątkowe' onPress={ ()=>{ Linking.openURL( this.state.osw )}}></Button>
+				<Button title='Pobierz oświadczenie majątkowe' onPress={ ()=>{ Linking.openURL( this.state.osw )}}></Button>
 			</View>
 		)
 	}
@@ -179,7 +189,9 @@ const styles = StyleSheet.create({
 
 	fieldContent: {
 		marginLeft: 'auto',
-		fontSize: 18
+		fontSize: 18,
+		maxWidth: '80%',
+		textAlign: 'right'
 	}
 });
 
