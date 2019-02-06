@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ZnajdzPosla",
+    "name": "ZnajdźPosla",
     "slug": "ZnajdzPosla",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -10,12 +10,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "icon": "./icons/web_hi_res_512.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -24,6 +19,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+    	"package": "com.gstark.znajdzposla"
     }
   }
 }
